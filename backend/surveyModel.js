@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
 
-const surveySchema = new mongoose.Schema({
-  title: String,
-  questions: [
-    {
-      type: String,
-      text: String,
-      options: [String],
-    },
-  ],
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  completedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+const questionSchema = new mongoose.Schema({
+  type: String,
+  text: String,
+  options: [String],
 });
 
-module.exports = mongoose.model("Survey", surveySchema);
+const surveySchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  questions: [questionSchema],
+});
+
+const Survey = mongoose.model("Survey", surveySchema);
+
+module.exports = Survey;

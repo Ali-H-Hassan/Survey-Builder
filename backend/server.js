@@ -1,14 +1,11 @@
-// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
-// Database connection
 require("./db");
 
-// Routes
-const userRoutes = require("./userRoutes"); // Ensure correct path
-const surveyRoutes = require("./surveyRoutes"); // Ensure correct path
+const userRoutes = require("./userRoutes");
+const surveyRoutes = require("./surveyRoutes");
 
 app.use(express.json());
 app.use("/user", userRoutes);
