@@ -6,6 +6,10 @@ async function signup(req, res) {
   try {
     const { username, email, password } = req.body;
 
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
@@ -68,4 +72,21 @@ async function updateProfile(req, res) {
   }
 }
 
-module.exports = { signup, login, updateProfile };
+function isAdmin(req, res, next) {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).json({ message: "Forbidden: Admin access required" });
+  }
+}
+
+async function getSurveyResponses(req, res) {
+  try {
+    res.status(200).json();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+module.exports = { signup, login, updateProfile, isAdmin, getSurveyResponses };
