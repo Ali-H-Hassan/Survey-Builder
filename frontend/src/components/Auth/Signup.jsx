@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./Signup.css";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -22,18 +23,12 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      // Send a POST request to your backend signup endpoint
       await axios.post("http://localhost:3001/user/signup", {
         username,
         email,
         password,
       });
-
-      // Redirect or perform other actions upon successful signup
-      // For example, redirecting to the login page
-      // history.push('/login');
     } catch (error) {
-      // Handle signup error (display error message, etc.)
       console.error("Signup failed", error.response.data.message);
     }
   };

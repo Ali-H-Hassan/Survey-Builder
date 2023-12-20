@@ -4,14 +4,18 @@ const User = require("./userModel");
 
 async function signup(req, res) {
   try {
+    console.log("Received signup request:", req.body);
+
     const { username, email, password } = req.body;
 
     if (!password) {
+      console.log("Password is required");
       return res.status(400).json({ message: "Password is required" });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("Email already registered");
       return res.status(400).json({ message: "Email already registered" });
     }
 
@@ -23,11 +27,14 @@ async function signup(req, res) {
       password: hashedPassword,
     });
 
-    await newUser.save();
+    // Additional log to check if saving to the database is successful
+    const savedUser = await newUser.save();
+    console.log("User saved to the database:", savedUser);
 
+    console.log("User registered successfully");
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error(error);
+    console.error("Error during signup:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
