@@ -32,6 +32,7 @@ const Signup = () => {
         password,
       });
       if (response.status === 201) {
+        localStorage.setItem("username", username);
         navigate("/dashboard");
       }
     } catch (error) {

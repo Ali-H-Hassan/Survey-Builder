@@ -90,9 +90,23 @@ async function getSurveyResponses(req, res) {
   }
 }
 
+async function getSurvey(req, res) {
+  try {
+    const surveyId = req.params.surveyId;
+    const survey = await Survey.findById(surveyId);
+    if (!survey) {
+      return res.status(404).send("Survey not found");
+    }
+    res.json(survey);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+}
+
 module.exports = {
   createSurvey,
   listSurveys,
+  getSurvey,
   submitSurvey,
   resetSurvey,
   getSurveyResponses,

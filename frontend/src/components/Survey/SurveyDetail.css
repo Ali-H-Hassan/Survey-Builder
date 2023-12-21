@@ -1,0 +1,39 @@
+.survey-detail-container {
+  margin: auto;
+  padding: 2rem;
+  max-width: 600px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.survey-detail-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.survey-questions-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.survey-question {
+  background-color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.survey-question p {
+  margin: 0.5rem 0;
+}
+
+.survey-question div {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #eee;
+  border-radius: 4px;
+  cursor: pointer;
+}
