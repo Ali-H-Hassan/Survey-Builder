@@ -1,0 +1,14 @@
+.profile-container {
+  text-align: center;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 20px;
+}
+
+.upload-form {
+  margin-top: 20px;
+}
