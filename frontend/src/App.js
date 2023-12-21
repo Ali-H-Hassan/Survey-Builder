@@ -4,8 +4,7 @@ import Login from "./components/Auth/Login.jsx";
 import Signup from "./components/Auth/Signup.jsx";
 import SurveyList from "./components/Survey/SurveyList.jsx";
 import SurveyDetail from "./components/Survey/SurveyDetail.jsx";
-import SurveyForm from "./components/Survey/SurveyForm.jsx";
-import Profile from "./components/User/Profile.jsx";
+import CreateSurvey from "./components/Survey/CreateSurvey.jsx";
 
 const App = () => {
   return (
@@ -15,8 +14,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<SurveyList />} />
         <Route path="/survey/:surveyId" element={<SurveyDetail />} />
-        <Route path="/create-survey" element={<SurveyForm />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/create-survey" element={<CreateSurvey />} />
       </Routes>
     </div>
   );

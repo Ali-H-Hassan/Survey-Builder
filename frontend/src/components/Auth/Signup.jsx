@@ -32,7 +32,8 @@ const Signup = () => {
         password,
       });
       if (response.status === 201) {
-        localStorage.setItem("username", username);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("isAdmin", response.data.isAdmin);
         navigate("/dashboard");
       }
     } catch (error) {

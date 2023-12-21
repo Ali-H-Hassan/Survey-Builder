@@ -4,35 +4,27 @@ const User = require("./userModel");
 
 async function signup(req, res) {
   try {
-    console.log("Received signup request:", req.body);
-
     const { username, email, password } = req.body;
-
-    if (!password) {
-      console.log("Password is required");
-      return res.status(400).json({ message: "Password is required" });
-    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("Email already registered");
       return res.status(400).json({ message: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
+      isAdmin: false,
     });
 
-    // Additional log to check if saving to the database is successful
     const savedUser = await newUser.save();
-    console.log("User saved to the database:", savedUser);
-
-    console.log("User registered successfully");
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({
+      message: "User registered successfully",
+      username: newUser.username,
+      isAdmin: newUser.isAdmin,
+    });
   } catch (error) {
     console.error("Error during signup:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -57,7 +49,11 @@ async function login(req, res) {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({
+      token: token,
+      username: user.username,
+      isAdmin: user.isAdmin,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });

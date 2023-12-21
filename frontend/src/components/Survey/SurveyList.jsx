@@ -7,8 +7,10 @@ const SurveyList = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   useEffect(() => {
+    console.log("isAdmin:", isAdmin);
     const fetchSurveys = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -27,7 +29,9 @@ const SurveyList = () => {
   const openSurvey = (surveyId) => {
     navigate(`/survey/${surveyId}`);
   };
-
+  const handleCreateSurveyClick = () => {
+    navigate("/create-survey");
+  };
   return (
     <div className="survey-list-container">
       <h1>Welcome {username}!</h1>
@@ -48,6 +52,14 @@ const SurveyList = () => {
           <p className="no-surveys">No surveys available to display.</p>
         )}
       </ul>
+      {isAdmin && (
+        <button
+          className="create-survey-button"
+          onClick={handleCreateSurveyClick}
+        >
+          Create New Survey
+        </button>
+      )}
     </div>
   );
 };

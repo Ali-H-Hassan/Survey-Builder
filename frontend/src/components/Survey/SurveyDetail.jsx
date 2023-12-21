@@ -1,5 +1,3 @@
-// SurveyDetail.jsx
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -129,13 +127,11 @@ const SurveyDetail = () => {
             </select>
           </div>
         );
-      // Add other question types as needed
       default:
         return <p>Unsupported question type: {question.type}</p>;
     }
   };
 
-  // Render the component or a loading message
   if (!survey) {
     return <div>Loading...</div>;
   }

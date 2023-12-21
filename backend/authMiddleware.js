@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("./userModel");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
@@ -7,12 +8,18 @@ async function verifyToken(req, res, next) {
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
-    req.token = bearerToken;
 
     try {
-      const decoded = jwt.verify(req.token, JWT_SECRET);
-      req.user = decoded;
+      const decoded = jwt.verify(bearerToken, JWT_SECRET);
 
+      const user = await User.findById(decoded.userId);
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: "Unauthorized: User not found" });
+      }
+
+      req.user = user;
       next();
     } catch (error) {
       console.error(error);
