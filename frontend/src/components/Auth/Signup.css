@@ -55,3 +55,21 @@
 .auth-form button:hover {
   background-color: #0056b3;
 }
+
+.form-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.form-footer p {
+  margin-bottom: 10px;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

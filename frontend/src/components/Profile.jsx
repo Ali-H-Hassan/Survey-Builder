@@ -18,9 +18,10 @@ const Profile = () => {
       const response = await axios.post("/user/upload-profile-pic", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setProfilePicUrl(response.data.profilePicUrl);
+      setProfilePicUrl(response.data.profilePic);
     } catch (error) {
       console.error("Error uploading profile picture:", error);
     }
