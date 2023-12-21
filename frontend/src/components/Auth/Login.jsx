@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [surveys, setSurveys] = useState([]);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -19,78 +18,48 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setError("");
     try {
       const response = await axios.post("http://localhost:3001/user/login", {
         email,
         password,
       });
-
-      console.log("Login Response:", response);
-
-      const token = response.data.token;
-
-      console.log("Token:", token);
-
-      localStorage.setItem("token", token);
-
-      navigate("/dashboard");
-
-      // Fetch and set the list of surveys upon successful login
-      // try {
-      //   const surveysResponse = await axios.get(
-      //     "http://localhost:3001/survey/list",
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     }
-      //   );
-
-      //   console.log("Surveys Response:", surveysResponse.data);
-
-      //   setSurveys(surveysResponse.data.surveys);
-      // } catch (surveysError) {
-      //   console.error("Error fetching surveys:", surveysError);
-      // }
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/dashboard");
+      }
     } catch (error) {
-      console.error("Login failed", error.response.data.message);
+      setError(error.response.data.message || "Invalid email or password");
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          required
-        />
-
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-        />
-
-        <button type="submit">Login</button>
-      </form>
-
-      {surveys.length > 0 && (
-        <div>
-          <h3>List of Surveys:</h3>
-          <ul>
-            {surveys.map((survey) => (
-              <li key={survey._id}>{survey.title}</li>
-            ))}
-          </ul>
+    <div className="auth-container">
+      <form onSubmit={handleLogin} className="auth-form">
+        <h2>Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            required
+          />
         </div>
-      )}
+        <div className="form-group">
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn">
+          Login
+        </button>
+      </form>
     </div>
   );
 };

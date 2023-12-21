@@ -1,36 +1,25 @@
 const jwt = require("jsonwebtoken");
-const User = require("./userModel");
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 async function verifyToken(req, res, next) {
-  const token = req.header("Authorization");
+  const bearerHeader = req.headers["authorization"];
+  if (typeof bearerHeader !== "undefined") {
+    const bearer = bearerHeader.split(" ");
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
 
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized: Token missing" });
-  }
+    try {
+      const decoded = jwt.verify(req.token, JWT_SECRET);
+      req.user = decoded;
 
-  try {
-    const decoded = jwt.verify(token, "your-secret-key");
-    const user = await User.findById(decoded.userId);
-
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized: User not found" });
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
-
-    req.user = {
-      userId: user._id,
-      isAdmin: user.isAdmin,
-    };
-
-    if (!user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: Admin access required" });
-    }
-
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: "Unauthorized: Invalid token" });
+  } else {
+    res.status(403).json({ message: "Forbidden: No token provided" });
   }
 }
 
